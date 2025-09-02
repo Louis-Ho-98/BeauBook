@@ -61,6 +61,7 @@ export interface Service {
 // Booking type
 export interface Booking {
   id: number;
+  bookingRef: string;
   serviceId: number;
   staffId: number;
   customerName: string;
@@ -72,7 +73,6 @@ export interface Booking {
   price: number;
   status: "confirmed" | "pending" | "cancelled" | "completed" | "no-show";
   notes?: string;
-  confirmationCode?: string;
   service?: Service;
   staff?: Staff;
   createdAt?: Date;
@@ -188,7 +188,7 @@ export interface BookingEmailData {
   bookingTime: string;
   duration: number;
   price: number;
-  confirmationCode: string;
+  bookingRef: string;
   businessName: string;
   businessPhone: string;
   businessEmail: string;

@@ -26,8 +26,8 @@ const calculateAvailability = (
 
   if (!schedule) return slots;
 
-  const [startHour, startMin] = schedule.startTime.split(":").map(Number);
-  const [endHour, endMin] = schedule.endTime.split(":").map(Number);
+  const [startHour, startMin] = schedule.start_time.split(":").map(Number);
+  const [endHour, endMin] = schedule.end_time.split(":").map(Number);
 
   const startMinutes = startHour * 60 + startMin;
   const endMinutes = endHour * 60 + endMin;
@@ -114,9 +114,9 @@ router.post(
       const dayOfWeek = new Date(date).getDay();
       const schedule = await StaffSchedule.findOne({
         where: {
-          staffId: staff_id,
-          dayOfWeek,
-          isAvailable: true,
+          staff_id,
+          day_of_week: dayOfWeek,
+          is_active: true,
         },
       });
 
@@ -127,16 +127,19 @@ router.post(
       // Get breaks for the day
       const breaks = await StaffBreak.findAll({
         where: {
-          staffId: staff_id,
-          [Op.or]: [{ dayOfWeek }, { breakDate: date, isRecurring: false }],
+          staff_id,
+          [Op.or]: [
+            { day_of_week: dayOfWeek },
+            { break_date: date, is_recurring: false },
+          ],
         },
       });
 
       // Get existing bookings for the day
       const bookings = await Booking.findAll({
         where: {
-          staffId: staff_id,
-          bookingDate: date,
+          staff_id,
+          booking_date: date,
           status: { [Op.ne]: "cancelled" },
         },
       });
@@ -212,8 +215,8 @@ router.post(
       // Check for conflicts
       const conflict = await Booking.findOne({
         where: {
-          staffId: staff_id,
-          bookingDate: booking_date,
+          staff_id,
+          booking_date,
           status: { [Op.ne]: "cancelled" },
           [Op.or]: [
             {
@@ -229,21 +232,25 @@ router.post(
       }
 
       // Generate confirmation code
-      const confirmationCode = `BB${Date.now().toString(36).toUpperCase()}`;
+      const date = new Date().toISOString().split("T")[0].replace(/-/g, "");
+      const random = Math.floor(Math.random() * 1000)
+        .toString()
+        .padStart(3, "0");
+      const booking_ref = `BK-${date}-${random}`;
 
       // Create booking
       const booking = await Booking.create({
-        customerName: customer_name,
-        customerEmail: customer_email,
-        customerPhone: customer_phone,
-        staffId: staff_id,
-        serviceId: service_id,
-        bookingDate: booking_date,
+        customer_name,
+        customer_email,
+        customer_phone,
+        staff_id,
+        service_id,
+        booking_date,
         start_time,
         end_time,
         notes,
         status: "confirmed",
-        confirmationCode,
+        booking_ref,
         price: service.price,
         duration: service.duration || 30,
       });
@@ -271,7 +278,7 @@ router.post(
 router.get("/ref/:booking_ref", async (req: Request, res: Response) => {
   try {
     const booking = await Booking.findOne({
-      where: { confirmationCode: req.params.booking_ref },
+      where: { booking_ref: req.params.booking_ref },
       include: [
         { model: Staff, as: "staff" },
         { model: Service, as: "service" },
@@ -305,8 +312,8 @@ router.put(
 
       const booking = await Booking.findOne({
         where: {
-          confirmationCode: req.params.booking_ref,
-          customerEmail: req.body.email,
+          booking_ref: req.params.booking_ref,
+          customer_email: req.body.email,
         },
       });
 
@@ -337,8 +344,8 @@ router.get("/", authenticateToken, async (req: Request, res: Response) => {
     const { date, staff_id, status, page = 1, limit = 20 } = req.query;
     const where: any = {};
 
-    if (date) where.bookingDate = date;
-    if (staff_id) where.staffId = staff_id;
+    if (date) where.booking_date = date;
+    if (staff_id) where.staff_id = staff_id;
     if (status) where.status = status;
 
     const offset = (Number(page) - 1) * Number(limit);
@@ -350,7 +357,7 @@ router.get("/", authenticateToken, async (req: Request, res: Response) => {
         { model: Service, as: "service" },
       ],
       order: [
-        ["bookingDate", "DESC"],
+        ["booking_date", "DESC"],
         ["start_time", "DESC"],
       ],
       limit: Number(limit),
@@ -408,21 +415,34 @@ router.get("/stats", authenticateToken, async (req: Request, res: Response) => {
 
     const todayBookings = await Booking.count({
       where: {
-        bookingDate: today,
+        booking_date: today,
         status: "confirmed",
       },
     });
 
-    const todayRevenue = await Booking.sum("price", {
+    // Find today's confirmed/completed bookings
+    const todayBookingsRecords = await Booking.findAll({
       where: {
-        bookingDate: today,
+        booking_date: today,
         status: { [Op.in]: ["confirmed", "completed"] },
       },
+      include: [{ model: Service, as: "service" }],
     });
+
+    // Accumulate revenue from service.price
+    const todayRevenue = todayBookingsRecords.reduce(
+      (sum: number, booking: any) => {
+        // booking.service may be null if association is missing
+        return (
+          sum + (booking.service?.price ? Number(booking.service.price) : 0)
+        );
+      },
+      0
+    );
 
     const monthlyBookings = await Booking.count({
       where: {
-        bookingDate: {
+        booking_date: {
           [Op.gte]: new Date(
             new Date().getFullYear(),
             new Date().getMonth(),

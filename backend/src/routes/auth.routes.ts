@@ -38,13 +38,16 @@ router.post(
       }
 
       // Check password
-      const isPasswordValid = await bcrypt.compare(password, admin.password);
+      const isPasswordValid = await bcrypt.compare(
+        password,
+        admin.password_hash
+      );
       if (!isPasswordValid) {
         return res.status(401).json({ error: "Invalid credentials" });
       }
 
       // Check if admin is active
-      if (!admin.isActive) {
+      if (!admin.is_active) {
         return res.status(403).json({ error: "Account is deactivated" });
       }
 

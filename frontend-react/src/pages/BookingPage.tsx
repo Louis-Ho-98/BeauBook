@@ -265,24 +265,34 @@ const BookingPage: React.FC = () => {
                 {currentStep >= 4 && bookingState.selectedDate && (
                     <div className="bg-white rounded-lg shadow-md p-6 mb-6">
                         <h2 className="text-xl font-semibold mb-4">Select Time</h2>
-                        <div className="grid grid-cols-3 md:grid-cols-4 gap-3">
-                            {availableSlots.map((slot) => (
-                                <button
-                                    key={slot.time}
-                                    onClick={() => handleTimeSelect(slot.time)}
-                                    disabled={!slot.available}
-                                    className={`p-3 border rounded-lg transition ${bookingState.selectedTime === slot.time
-                                        ? 'border-pink-500 bg-pink-50'
-                                        : slot.available
-                                            ? 'border-gray-200 hover:border-pink-500'
-                                            : 'border-gray-200 bg-gray-100 cursor-not-allowed opacity-50'
-                                        }`}
-                                >
-                                    <Clock className="w-4 h-4 mx-auto mb-1 text-gray-600" />
-                                    {slot.time}
-                                </button>
-                            ))}
-                        </div>
+                        {availableSlots.length === 0 ? (
+                            <div className="flex flex-col items-center justify-center py-8">
+                                <Clock className="w-8 h-8 text-gray-400 mb-3" />
+                                <p className="text-gray-600 text-base font-medium text-center">
+                                    Sorry, there are no available time slots for this service on your selected date.<br />
+                                    Please choose another date or try a different staff member.
+                                </p>
+                            </div>
+                        ) : (
+                            <div className="grid grid-cols-3 md:grid-cols-4 gap-3">
+                                {availableSlots.map((slot) => (
+                                    <button
+                                        key={slot.time}
+                                        onClick={() => handleTimeSelect(slot.time)}
+                                        disabled={!slot.available}
+                                        className={`p-3 border rounded-lg transition ${bookingState.selectedTime === slot.time
+                                            ? 'border-pink-500 bg-pink-50'
+                                            : slot.available
+                                                ? 'border-gray-200 hover:border-pink-500'
+                                                : 'border-gray-200 bg-gray-100 cursor-not-allowed opacity-50'
+                                            }`}
+                                    >
+                                        <Clock className="w-4 h-4 mx-auto mb-1 text-gray-600" />
+                                        {slot.time}
+                                    </button>
+                                ))}
+                            </div>
+                        )}
                     </div>
                 )}
 

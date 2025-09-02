@@ -6,6 +6,8 @@ export interface StaffBreakAttributes {
   day_of_week: number;
   start_time: string;
   end_time: string;
+  is_recurring?: boolean;
+  break_date?: string;
 }
 
 export interface StaffBreakCreationAttributes
@@ -20,6 +22,8 @@ export class StaffBreak
   public day_of_week!: number;
   public start_time!: string;
   public end_time!: string;
+  public is_recurring?: boolean;
+  public break_date?: string;
 
   public readonly createdAt!: Date;
   public readonly updatedAt!: Date;
@@ -58,6 +62,14 @@ export default function initStaffBreakModel(
       end_time: {
         type: DataTypes.TIME,
         allowNull: false,
+      },
+      is_recurring: {
+        type: DataTypes.BOOLEAN,
+        defaultValue: false,
+      },
+      break_date: {
+        type: DataTypes.DATE,
+        allowNull: true,
       },
     },
     {

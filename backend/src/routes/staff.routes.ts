@@ -11,12 +11,12 @@ const { Staff, StaffSchedule, StaffBreak, Service } = require("../models");
 router.get("/", async (req: Request, res: Response) => {
   try {
     const staff = await Staff.findAll({
-      where: { isActive: true },
+      where: { is_active: true },
       include: [
         {
           model: StaffSchedule,
           as: "schedules",
-          where: { isAvailable: true },
+          where: { is_active: true },
           required: false,
         },
       ],
@@ -41,7 +41,7 @@ router.get("/:id", async (req: Request, res: Response) => {
         {
           model: StaffSchedule,
           as: "schedules",
-          where: { isAvailable: true },
+          where: { is_active: true },
           required: false,
         },
         {

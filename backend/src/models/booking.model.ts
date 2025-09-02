@@ -121,13 +121,5 @@ export default function initBookingModel(sequelize: Sequelize): typeof Booking {
     }
   );
 
-  Booking.beforeCreate((booking: Booking) => {
-    const date = new Date().toISOString().split("T")[0].replace(/-/g, "");
-    const random = Math.floor(Math.random() * 1000)
-      .toString()
-      .padStart(3, "0");
-    booking.booking_ref = `BK-${date}-${random}`;
-  });
-
   return Booking;
 }

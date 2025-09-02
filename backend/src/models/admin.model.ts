@@ -5,6 +5,7 @@ export interface AdminAttributes {
   email: string;
   password_hash: string;
   name: string;
+  is_active: boolean;
   role?: string;
 }
 
@@ -20,6 +21,7 @@ export class Admin
   public password_hash!: string;
   public name!: string;
   public role!: string;
+  public is_active!: boolean;
 
   public readonly createdAt!: Date;
   public readonly updatedAt!: Date;
@@ -52,6 +54,10 @@ export default function initAdminModel(sequelize: Sequelize): typeof Admin {
       role: {
         type: DataTypes.STRING,
         defaultValue: "admin",
+      },
+      is_active: {
+        type: DataTypes.BOOLEAN,
+        defaultValue: true,
       },
     },
     {

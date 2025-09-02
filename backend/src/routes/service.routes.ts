@@ -11,7 +11,7 @@ const { Service } = require("../models");
 router.get("/", async (req: Request, res: Response) => {
   try {
     const services = await Service.findAll({
-      where: { isActive: true },
+      where: { is_active: true },
       order: [
         ["category", "ASC"],
         ["name", "ASC"],
@@ -71,7 +71,7 @@ router.post(
         category: req.body.category || "General",
         duration: req.body.duration,
         price: req.body.price,
-        isActive: true,
+        is_active: true,
       });
 
       res.status(201).json({
@@ -95,7 +95,7 @@ router.put(
     body("price").optional().isFloat({ min: 0 }),
     body("category").optional().trim(),
     body("description").optional().trim(),
-    body("isActive").optional().isBoolean(),
+    body("is_active").optional().isBoolean(),
   ],
   async (req: Request, res: Response) => {
     try {
@@ -136,7 +136,7 @@ router.delete(
       }
 
       // Soft delete by setting isActive to false
-      await service.update({ isActive: false });
+      await service.update({ is_active: false });
 
       res.json({
         success: true,
