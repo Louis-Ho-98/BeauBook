@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import { adminApi } from '../services/api';
 import { Booking, Staff, Service } from '../types';
@@ -16,6 +17,7 @@ import {
 
 const AdminDashboard: React.FC = () => {
     const { admin } = useAuth();
+    const navigate = useNavigate();
     const [bookings, setBookings] = useState<Booking[]>([]);
     const [stats, setStats] = useState({
         todayBookings: 0,
@@ -254,7 +256,10 @@ const AdminDashboard: React.FC = () => {
                     <button className="bg-white border-2 border-pink-600 text-pink-600 py-3 px-6 rounded-lg font-semibold hover:bg-pink-50 transition">
                         Manage Services
                     </button>
-                    <button className="bg-white border-2 border-purple-600 text-purple-600 py-3 px-6 rounded-lg font-semibold hover:bg-purple-50 transition">
+                    <button
+                        onClick={() => navigate('/admin/staff')}
+                        className="bg-white border-2 border-purple-600 text-purple-600 py-3 px-6 rounded-lg font-semibold hover:bg-purple-50 transition"
+                    >
                         Manage Staff
                     </button>
                     <button className="bg-white border-2 border-blue-600 text-blue-600 py-3 px-6 rounded-lg font-semibold hover:bg-blue-50 transition">

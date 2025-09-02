@@ -14,7 +14,7 @@ const AdminLogin: React.FC = () => {
     const [showPassword, setShowPassword] = useState(false);
     const [loading, setLoading] = useState(false);
 
-    const from = location.state?.from?.pathname || '/admin/dashboard';
+    const from = location.state?.from?.pathname || '/admin';
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();

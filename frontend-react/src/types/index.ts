@@ -16,6 +16,7 @@ export interface Staff {
   name: string;
   email?: string;
   phone?: string;
+  bio?: string;
   specialties: string[];
   avatar_url?: string;
   is_active: boolean;

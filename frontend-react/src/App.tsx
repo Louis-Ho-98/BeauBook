@@ -10,6 +10,7 @@ import BookingPage from './pages/BookingPage';
 import AdminLogin from './pages/AdminLogin';
 import AdminDashboard from './pages/AdminDashboard';
 import BookingConfirmation from './pages/BookingConfirmation';
+import StaffManagement from './pages/StaffManagement';
 
 // Components
 import Layout from './components/Layout';
@@ -30,10 +31,18 @@ const App: React.FC = () => {
                             {/* Admin Routes */}
                             <Route path="/admin/login" element={<AdminLogin />} />
                             <Route
-                                path="/admin/*"
+                                path="/admin"
                                 element={
                                     <ProtectedRoute>
                                         <AdminDashboard />
+                                    </ProtectedRoute>
+                                }
+                            />
+                            <Route
+                                path="/admin/staff"
+                                element={
+                                    <ProtectedRoute>
+                                        <StaffManagement />
                                     </ProtectedRoute>
                                 }
                             />
