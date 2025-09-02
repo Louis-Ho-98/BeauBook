@@ -287,7 +287,7 @@ DB_USER=your_user
 DB_PASSWORD=your_password
 
 # Server
-PORT=5000
+PORT=5020
 NODE_ENV=development
 
 # JWT
@@ -328,7 +328,7 @@ npx tailwindcss init -p
 ### 2. Frontend Environment Variables (.env)
 
 ```env
-REACT_APP_API_URL=http://localhost:5000/api
+REACT_APP_API_URL=http://localhost:5020/api
 REACT_APP_BUSINESS_NAME=BeauBook Salon
 ```
 

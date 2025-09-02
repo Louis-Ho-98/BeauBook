@@ -71,7 +71,7 @@ DATABASE_URL=postgresql://postgres:password@localhost:5432/beaubook
 # DATABASE_URL=postgresql://beaubook:beaubook123@localhost:5432/beaubook
 
 # Server
-PORT=5000
+PORT=5020
 NODE_ENV=development
 
 # JWT Secrets (generate random strings)
@@ -98,7 +98,7 @@ npm run build
 npm start
 ```
 
-The backend API will be available at `http://localhost:5000`
+The backend API will be available at `http://localhost:5020`
 
 ### 4. Frontend Setup (React TypeScript)
 
@@ -120,7 +120,7 @@ touch .env
 Add the following:
 
 ```env
-VITE_API_URL=http://localhost:5000/api
+VITE_API_URL=http://localhost:5020/api
 ```
 
 #### Start the Frontend Development Server
@@ -262,8 +262,8 @@ npm install
 **Solution:**
 
 ```bash
-# Find process using port 5000 (backend)
-lsof -i :5000
+# Find process using port 5020 (backend)
+lsof -i :5020
 kill -9 <PID>
 
 # Find process using port 3000 (frontend)
@@ -309,10 +309,10 @@ Example API calls:
 
 ```bash
 # Get all services
-curl http://localhost:5000/api/services
+curl http://localhost:5020/api/services
 
 # Create a booking
-curl -X POST http://localhost:5000/api/bookings \
+curl -X POST http://localhost:5020/api/bookings \
   -H "Content-Type: application/json" \
   -d '{
     "customer_name": "John Doe",
@@ -325,7 +325,7 @@ curl -X POST http://localhost:5000/api/bookings \
   }'
 
 # Admin login
-curl -X POST http://localhost:5000/api/auth/admin/login \
+curl -X POST http://localhost:5020/api/auth/admin/login \
   -H "Content-Type: application/json" \
   -d '{
     "email": "admin@beaubook.com",

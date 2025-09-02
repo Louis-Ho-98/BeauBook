@@ -8,7 +8,7 @@ import sequelize from "./config/database";
 dotenv.config();
 
 const app: Express = express();
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 5020;
 
 // Import routes
 import authRoutes from "./routes/auth.routes";
@@ -162,7 +162,7 @@ const startServer = async () => {
     // Sync database models (create tables if they don't exist)
     // In production, you should use migrations instead
     if (process.env.NODE_ENV !== "production") {
-      await sequelize.sync({ alter: true });
+      await sequelize.sync({ force: true });
       console.log("✅ Database synchronized successfully.");
 
       // Initialize default data

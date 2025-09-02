@@ -108,7 +108,7 @@ Add at the top of app.js:
 ```javascript
 const API_URL =
   window.location.hostname === "localhost"
-    ? "http://localhost:5000/api"
+    ? "http://localhost:5020/api"
     : "https://beaubook-api.onrender.com/api";
 ```
 

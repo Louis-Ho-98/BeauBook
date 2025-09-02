@@ -13,12 +13,12 @@ export const initializeDefaultData = async (): Promise<void> => {
 
       // Create default admin
       const hashedPassword = await bcrypt.hash("Admin123!", 10);
+
       await Admin.create({
         email: "admin@beaubook.com",
-        password: hashedPassword,
+        password_hash: hashedPassword,
         name: "System Administrator",
         role: "super_admin",
-        isActive: true,
       });
 
       console.log("✅ Default admin created");
@@ -37,49 +37,49 @@ export const initializeDefaultData = async (): Promise<void> => {
           name: "Classic Haircut",
           description: "Professional haircut with wash and style",
           category: "Hair",
-          duration: 45,
+          duration_minutes: 45,
           price: 45,
-          isActive: true,
+          is_active: true,
         },
         {
           name: "Hair Color",
           description: "Full hair coloring service with professional products",
           category: "Hair",
-          duration: 120,
+          duration_minutes: 120,
           price: 120,
-          isActive: true,
+          is_active: true,
         },
         {
           name: "Manicure",
           description: "Classic manicure with polish",
           category: "Nails",
-          duration: 30,
+          duration_minutes: 30,
           price: 35,
-          isActive: true,
+          is_active: true,
         },
         {
           name: "Pedicure",
           description: "Relaxing pedicure with massage",
           category: "Nails",
-          duration: 45,
+          duration_minutes: 45,
           price: 45,
-          isActive: true,
+          is_active: true,
         },
         {
           name: "Facial Treatment",
           description: "Deep cleansing facial with moisturizing",
           category: "Spa",
-          duration: 60,
+          duration_minutes: 60,
           price: 80,
-          isActive: true,
+          is_active: true,
         },
         {
           name: "Massage Therapy",
           description: "Relaxing full body massage",
           category: "Spa",
-          duration: 60,
+          duration_minutes: 60,
           price: 90,
-          isActive: true,
+          is_active: true,
         },
       ];
 
@@ -100,7 +100,7 @@ export const initializeDefaultData = async (): Promise<void> => {
           phone: "555-0101",
           bio: "Senior stylist with 10+ years experience",
           specialties: ["Hair Color", "Classic Haircut", "Hair Styling"],
-          isActive: true,
+          is_active: true,
         },
         {
           name: "Emily Chen",
@@ -108,7 +108,7 @@ export const initializeDefaultData = async (): Promise<void> => {
           phone: "555-0102",
           bio: "Nail art specialist and manicure expert",
           specialties: ["Manicure", "Pedicure", "Nail Art"],
-          isActive: true,
+          is_active: true,
         },
         {
           name: "Michael Rodriguez",
@@ -116,7 +116,7 @@ export const initializeDefaultData = async (): Promise<void> => {
           phone: "555-0103",
           bio: "Expert in men's grooming and classic cuts",
           specialties: ["Classic Haircut", "Beard Trim", "Hair Styling"],
-          isActive: true,
+          is_active: true,
         },
         {
           name: "Jessica Park",
@@ -128,7 +128,7 @@ export const initializeDefaultData = async (): Promise<void> => {
             "Facial Treatment",
             "Spa Treatments",
           ],
-          isActive: true,
+          is_active: true,
         },
         {
           name: "David Kim",
@@ -136,7 +136,7 @@ export const initializeDefaultData = async (): Promise<void> => {
           phone: "555-0105",
           bio: "Creative hair colorist and stylist",
           specialties: ["Hair Color", "Classic Haircut", "Hair Treatment"],
-          isActive: true,
+          is_active: true,
         },
       ];
 
@@ -147,20 +147,20 @@ export const initializeDefaultData = async (): Promise<void> => {
       for (const staff of createdStaff) {
         for (let dayOfWeek = 1; dayOfWeek <= 5; dayOfWeek++) {
           schedules.push({
-            staffId: staff.id,
-            dayOfWeek,
-            startTime: "09:00",
-            endTime: "18:00",
-            isAvailable: true,
+            staff_id: staff.id,
+            day_of_week: dayOfWeek,
+            start_time: "09:00",
+            end_time: "18:00",
+            is_active: true,
           });
         }
         // Saturday schedule (10 AM to 4 PM)
         schedules.push({
-          staffId: staff.id,
-          dayOfWeek: 6,
-          startTime: "10:00",
-          endTime: "16:00",
-          isAvailable: true,
+          staff_id: staff.id,
+          day_of_week: 6,
+          start_time: "10:00",
+          end_time: "16:00",
+          is_active: true,
         });
       }
 
@@ -183,31 +183,11 @@ export const initializeDefaultData = async (): Promise<void> => {
       console.log("Creating default business settings...");
 
       await BusinessSettings.create({
-        businessName: "BeauBook Salon",
-        email: "info@beaubook.com",
-        phone: "(555) 123-4567",
-        address: "123 Beauty Lane, Vancouver, BC V6B 1A1",
-        website: "https://beaubook.com",
+        business_name: "BeauBook Salon",
+        business_email: "info@beaubook.com",
+        business_phone: "(555) 123-4567",
+        business_address: "123 Beauty Lane, Vancouver, BC V6B 1A1",
         timezone: "America/Vancouver",
-        currency: "CAD",
-        bookingLeadTime: 2, // 2 hours
-        maxAdvanceBooking: 60, // 60 days
-        cancellationPolicy:
-          "Cancellations must be made at least 24 hours in advance.",
-        socialMedia: {
-          facebook: "https://facebook.com/beaubook",
-          instagram: "https://instagram.com/beaubook",
-          twitter: "https://twitter.com/beaubook",
-        },
-        businessHours: {
-          monday: { open: "09:00", close: "18:00" },
-          tuesday: { open: "09:00", close: "18:00" },
-          wednesday: { open: "09:00", close: "18:00" },
-          thursday: { open: "09:00", close: "18:00" },
-          friday: { open: "09:00", close: "18:00" },
-          saturday: { open: "10:00", close: "16:00" },
-          sunday: { open: null, close: null },
-        },
       });
 
       console.log("✅ Default business settings created");

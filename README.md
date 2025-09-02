@@ -65,7 +65,7 @@ python -m http.server 8080
 4. **Access the Application**
 
 - Frontend: http://localhost:8080
-- Backend API: http://localhost:5000
+- Backend API: http://localhost:5020
 - Admin Login: admin@beaubook.com / admin123
 
 ## 💻 Technology Stack
@@ -163,7 +163,7 @@ Create `.env` file in backend directory:
 DATABASE_URL=postgresql://user:pass@localhost:5432/beaubook
 
 # Server
-PORT=5000
+PORT=5020
 NODE_ENV=development
 
 # JWT
