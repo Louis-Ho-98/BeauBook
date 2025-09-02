@@ -3,6 +3,7 @@ import { Op } from "sequelize";
 import { body, validationResult } from "express-validator";
 import { AuthRequest } from "../types";
 import { authenticateToken } from "../middleware/auth.middleware";
+import { getDay } from "@/utils/datetimeHelper";
 
 const router = Router();
 
@@ -111,7 +112,8 @@ router.post(
       }
 
       // Get staff schedule for the day
-      const dayOfWeek = new Date(date).getDay();
+
+      const dayOfWeek = getDay(date);
       const schedule = await StaffSchedule.findOne({
         where: {
           staff_id,
@@ -119,6 +121,8 @@ router.post(
           is_active: true,
         },
       });
+
+      console.log("Schedule: ", schedule);
 
       if (!schedule) {
         return res.json({ success: true, slots: [] });
@@ -275,10 +279,10 @@ router.post(
 );
 
 // Get booking by reference (public)
-router.get("/ref/:booking_ref", async (req: Request, res: Response) => {
+router.get("/ref/:id", async (req: Request, res: Response) => {
   try {
     const booking = await Booking.findOne({
-      where: { booking_ref: req.params.booking_ref },
+      where: { id: req.params.id },
       include: [
         { model: Staff, as: "staff" },
         { model: Service, as: "service" },

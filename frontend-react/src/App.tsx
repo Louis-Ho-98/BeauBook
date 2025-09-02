@@ -26,7 +26,7 @@ const App: React.FC = () => {
                             {/* Public Routes */}
                             <Route path="/" element={<HomePage />} />
                             <Route path="/booking" element={<BookingPage />} />
-                            <Route path="/booking/confirmation/:ref" element={<BookingConfirmation />} />
+                            <Route path="/booking/confirmation/:id" element={<BookingConfirmation />} />
 
                             {/* Admin Routes */}
                             <Route path="/admin/login" element={<AdminLogin />} />

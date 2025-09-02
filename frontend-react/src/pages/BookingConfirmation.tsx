@@ -18,7 +18,7 @@ const BookingConfirmation: React.FC = () => {
 
     const fetchBooking = async () => {
         try {
-            const data = await publicApi.getBookingByRef(id!);
+            const data = await publicApi.getBookingById(id!);
             setBooking(data);
         } catch (error) {
             setError(true);

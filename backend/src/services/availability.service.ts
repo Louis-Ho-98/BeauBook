@@ -1,5 +1,6 @@
 import { Op } from "sequelize";
 import { Staff, StaffSchedule, StaffBreak, Booking } from "../models";
+import { getDay } from "@/utils/datetimeHelper";
 
 export interface TimeSlot {
   time: string;
@@ -95,7 +96,7 @@ export async function getAvailableStaff(
       },
     },
   });
-  const dayOfWeek = new Date(date).getDay();
+  const dayOfWeek = getDay(date);
   const availableStaff: any[] = [];
   for (const staffMember of staff) {
     const schedule = await StaffSchedule.findOne({

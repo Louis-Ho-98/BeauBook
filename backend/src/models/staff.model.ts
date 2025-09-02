@@ -8,6 +8,7 @@ export interface StaffAttributes {
   specialties?: string[];
   avatar_url?: string;
   is_active?: boolean;
+  bio?: string;
 }
 
 export interface StaffCreationAttributes
@@ -27,6 +28,7 @@ export class Staff
   public specialties?: string[];
   public avatar_url?: string;
   public is_active?: boolean;
+  public bio?: string;
 
   public readonly createdAt!: Date;
   public readonly updatedAt!: Date;
@@ -64,6 +66,9 @@ export default function initStaffModel(sequelize: Sequelize): typeof Staff {
       is_active: {
         type: DataTypes.BOOLEAN,
         defaultValue: true,
+      },
+      bio: {
+        type: DataTypes.STRING,
       },
     },
     {

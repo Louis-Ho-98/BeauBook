@@ -125,7 +125,7 @@ export const publicApi = {
     return response.data.booking;
   },
 
-  getBookingByRef: async (ref: string): Promise<Booking> => {
+  getBookingById: async (ref: string): Promise<Booking> => {
     const response = await api.get(`/bookings/ref/${ref}`);
     return response.data.booking;
   },
@@ -324,7 +324,7 @@ export const staffApi = {
 
 export const bookingsApi = {
   create: publicApi.createBooking,
-  getByRef: publicApi.getBookingByRef,
+  getByRef: publicApi.getBookingById,
   cancel: publicApi.cancelBooking,
   getAvailableSlots: publicApi.getAvailability,
   getAll: adminApi.getBookings,

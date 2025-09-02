@@ -81,7 +81,7 @@ router.get("/:id/services", async (req: Request, res: Response) => {
       // If specialties contains service IDs
       services = await Service.findAll({
         where: {
-          isActive: true,
+          is_active: true,
         },
       });
 
@@ -96,7 +96,7 @@ router.get("/:id/services", async (req: Request, res: Response) => {
     } else {
       // Return all active services if no specialties defined
       services = await Service.findAll({
-        where: { isActive: true },
+        where: { is_active: true },
       });
     }
 
@@ -134,7 +134,7 @@ router.post(
         phone: req.body.phone,
         bio: req.body.bio,
         specialties: req.body.specialties || [],
-        isActive: true,
+        is_active: true,
       });
 
       res.status(201).json({
@@ -161,7 +161,7 @@ router.put(
     body("phone").optional().trim(),
     body("bio").optional().trim(),
     body("specialties").optional().isArray(),
-    body("isActive").optional().isBoolean(),
+    body("is_active").optional().isBoolean(),
   ],
   async (req: Request, res: Response) => {
     try {
@@ -204,8 +204,8 @@ router.delete(
         return res.status(404).json({ error: "Staff member not found" });
       }
 
-      // Soft delete by setting isActive to false
-      await staff.update({ isActive: false });
+      // Soft delete by setting is_active to false
+      await staff.update({ is_active: false });
 
       res.json({
         success: true,
@@ -225,31 +225,31 @@ router.put(
   async (req: Request, res: Response) => {
     try {
       const { schedules } = req.body;
-      const staffId = req.params.id;
+      const staff_id = req.params.id;
 
       // Verify staff exists
-      const staff = await Staff.findByPk(staffId);
+      const staff = await Staff.findByPk(staff_id);
       if (!staff) {
         return res.status(404).json({ error: "Staff member not found" });
       }
 
       // Delete existing schedules
       await StaffSchedule.destroy({
-        where: { staffId },
+        where: { staff_id },
       });
 
       // Create new schedules
       if (schedules && schedules.length > 0) {
         const scheduleData = schedules.map((schedule: any) => ({
           ...schedule,
-          staffId,
+          staff_id,
         }));
         await StaffSchedule.bulkCreate(scheduleData);
       }
 
       // Get updated schedules
       const updatedSchedules = await StaffSchedule.findAll({
-        where: { staffId },
+        where: { staff_id },
       });
 
       res.json({
@@ -270,31 +270,31 @@ router.put(
   async (req: Request, res: Response) => {
     try {
       const { breaks } = req.body;
-      const staffId = req.params.id;
+      const staff_id = req.params.id;
 
       // Verify staff exists
-      const staff = await Staff.findByPk(staffId);
+      const staff = await Staff.findByPk(staff_id);
       if (!staff) {
         return res.status(404).json({ error: "Staff member not found" });
       }
 
       // Delete existing breaks
       await StaffBreak.destroy({
-        where: { staffId },
+        where: { staff_id },
       });
 
       // Create new breaks
       if (breaks && breaks.length > 0) {
         const breakData = breaks.map((breakItem: any) => ({
           ...breakItem,
-          staffId,
+          staff_id,
         }));
         await StaffBreak.bulkCreate(breakData);
       }
 
       // Get updated breaks
       const updatedBreaks = await StaffBreak.findAll({
-        where: { staffId },
+        where: { staff_id },
       });
 
       res.json({
